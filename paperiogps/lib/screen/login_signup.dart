@@ -410,8 +410,8 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
         prefs.setString("password", _textEditingControllerPassword.text);
       } else {
         prefs.setBool("isRememberedUser", false);
-        prefs.setString("username", "");
-        prefs.setString("password", "");
+        prefs.setString("username", _textEditingControllerUsername.text);
+        prefs.setString("password", _textEditingControllerPassword.text);
       }
       Navigator.push(
         context,
