@@ -1,0 +1,16 @@
+{
+  "name": "nodejsserverapi",
+  "version": "1.0.0",
+  "description": "serverapi with nodejs",
+  "main": "main.js",
+  "scripts": {
+    "test": "x"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.2",
+    "mysql": "^2.18.1",
+    "ws": "^8.4.0"
+  }
+}
