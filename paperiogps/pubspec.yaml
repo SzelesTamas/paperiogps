@@ -41,6 +41,7 @@ dependencies:
   geocoder: ^0.2.1
   intl: ^0.17.0
   geolocator: ^8.0.1
+  flutter_map: ^0.14.0
 
 dev_dependencies:
   flutter_test:

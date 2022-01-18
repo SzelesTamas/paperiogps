@@ -193,6 +193,7 @@ wss.on("connection", async function (ws) {
 
     ws.on("message", async function (data) {
         var msg = JSON.parse(data.toString());
+        debugPrint("Message received:")
         debugPrint(msg);
         if (msg.type === "isUsernameTaken") {
             var toSend = { type: "isUsernameTakenReturn", returnValue: await isUsernameTaken(msg.username) };

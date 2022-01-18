@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
+import 'package:paperiogps/screen/mapwidget.dart';
 import '../logic/websocket_logic.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GameMainPage extends StatefulWidget {
   GameMainPage({Key key}) : super(key: key);
@@ -28,9 +30,14 @@ class _GameMainPageState extends State<GameMainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: TextField(
-          enabled: false,
-          controller: _textEditingControllerCoordinates,
+        child: Stack(
+          children: [
+            MapWidget(),
+            TextField(
+              enabled: false,
+              controller: _textEditingControllerCoordinates,
+            ),
+          ]
         ),
       ),
     );
@@ -40,6 +47,7 @@ class _GameMainPageState extends State<GameMainPage> {
     bool serviceEnabled;
     LocationPermission permission;
 
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       return Future.error('Location services are disabled.');
@@ -65,6 +73,9 @@ class _GameMainPageState extends State<GameMainPage> {
           : position.latitude.toString() +
               ', ' +
               position.longitude.toString());
+      prefs.setDouble("lastLat", position.latitude);     //uncommenting these sometimes often breaks everything
+      prefs.setDouble("lastLng", position.longitude);
+
       _wsapi.sendLocationData(position, DateTime.now().millisecondsSinceEpoch);
     });
   }
