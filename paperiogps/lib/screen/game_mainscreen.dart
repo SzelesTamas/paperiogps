@@ -15,6 +15,7 @@ class GameMainPage extends StatefulWidget {
 class _GameMainPageState extends State<GameMainPage> {
   DateFormat _dateTime;
   WebSocketAPI _wsapi = WebSocketAPI.gameMainScreenAPI();
+  MapWidget _mapwidget = MapWidget();
   final _textEditingControllerCoordinates = TextEditingController();
   final LocationSettings _locationSettings = const LocationSettings(
     accuracy: LocationAccuracy.high,
@@ -30,15 +31,13 @@ class _GameMainPageState extends State<GameMainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Stack(
-          children: [
-            MapWidget(),
-            TextField(
-              enabled: false,
-              controller: _textEditingControllerCoordinates,
-            ),
-          ]
-        ),
+        child: Stack(children: [
+          _mapwidget,
+          TextField(
+            enabled: false,
+            controller: _textEditingControllerCoordinates,
+          ),
+        ]),
       ),
     );
   }
@@ -73,9 +72,14 @@ class _GameMainPageState extends State<GameMainPage> {
           : position.latitude.toString() +
               ', ' +
               position.longitude.toString());
-      prefs.setDouble("lastLat", position.latitude);     //uncommenting these sometimes often breaks everything
+      prefs.setDouble(
+          "lastLat",
+          position
+              .latitude); //uncommenting these sometimes often breaks everything
       prefs.setDouble("lastLng", position.longitude);
 
+      _mapwidget.state
+          .updateMarkerLocation(position.latitude, position.longitude);
       _wsapi.sendLocationData(position, DateTime.now().millisecondsSinceEpoch);
     });
   }
