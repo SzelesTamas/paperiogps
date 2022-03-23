@@ -7,15 +7,15 @@ const game_lib = require("boundary_fill.js")
 arena = new game_lib.Arena("Szigetszentmiklos",
     new game_lib.MapPoint(47.372974, 18.996256),
     new game_lib.MapPoint(47.306302, 19.072626),
-    10,
+    100,
 )
 arena2 = new game_lib.Arena("Kerekegyhaza",
-    new game_lib.MapPoint(46.9492,19.4562),
-    new game_lib.MapPoint(46.9273,19.4965),
+    new game_lib.MapPoint(46.9492, 19.4562),
+    new game_lib.MapPoint(46.9273, 19.4965),
     10,
 )
 
-arena = arena2;
+//arena = arena2;
 
 const wss = new WebSocketServer.Server({
     port: 8080

@@ -19,7 +19,7 @@ class _GameMainPageState extends State<GameMainPage> {
   final _textEditingControllerCoordinates = TextEditingController();
   final LocationSettings _locationSettings = const LocationSettings(
     accuracy: LocationAccuracy.high,
-    distanceFilter: 1,
+    distanceFilter: 0,
   );
 
   _GameMainPageState() {

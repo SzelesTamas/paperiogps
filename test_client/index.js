@@ -1,4 +1,4 @@
-var socket = new WebSocket("ws://localhost:8080");
+var socket = new WebSocket('wss://api.mapconquest.tech');
 var usernameInputField = document.getElementById("usernameInputField");
 var passwordInputField = document.getElementById("passwordInputField");
 var errorMessage = document.getElementById("errorMessage");

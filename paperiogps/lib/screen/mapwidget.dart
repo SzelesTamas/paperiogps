@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import "package:latlong2/latlong.dart";
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:collection';
 
 class MapWidget extends StatefulWidget {
   MapWidget({Key key}) : super(key: key);
@@ -13,9 +14,11 @@ class MapWidget extends StatefulWidget {
 
 class _MapWidgetState extends State<MapWidget> {
   LatLng _markerPoint = LatLng(47.3729, 18.9962);
+  List<Polygon> _polygons = List<Polygon>();
 
   _MapWidgetState() {
     //updateMarkerLocation(47.2729, 18.9962);
+    proba();
   }
 
   @override
@@ -31,6 +34,7 @@ class _MapWidgetState extends State<MapWidget> {
             urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
             subdomains: ['a', 'b', 'c'],
           ),
+          PolygonLayerOptions(polygons: _polygons),
           MarkerLayerOptions(
             markers: [
               Marker(
@@ -67,5 +71,21 @@ class _MapWidgetState extends State<MapWidget> {
     lng ??= 19.4;
     _markerPoint = LatLng(lat, lng);
     setState(() {});
+  }
+
+  void proba() {
+    List<LatLng> polygonLatLongs = List<LatLng>();
+    polygonLatLongs.add(LatLng(46.9492, 19.4562));
+    polygonLatLongs.add(LatLng(46.9273, 19.4562));
+    polygonLatLongs.add(LatLng(46.9273, 19.4965));
+    polygonLatLongs.add(LatLng(46.9492, 19.4965));
+
+    //debugPrint("itt jar");
+
+    _polygons.add(Polygon(
+        points: polygonLatLongs,
+        color: Color.fromARGB(100, 40, 30, 128),
+        borderColor: Colors.red,
+        borderStrokeWidth: 1));
   }
 }

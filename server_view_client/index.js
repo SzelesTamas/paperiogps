@@ -1,4 +1,4 @@
-var socket = new WebSocket("ws://localhost:8080");
+var socket = new WebSocket('wss://api.mapconquest.tech');
 var messageP = document.getElementById("Message");
 var map;
 const userLines = new Map();
