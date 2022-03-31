@@ -66,7 +66,14 @@ class _GameMainPageState extends State<GameMainPage> {
     }
 
     Geolocator.getPositionStream(locationSettings: _locationSettings)
-        .listen((Position position) {
+        .listen((Position position) async {
+      permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          return Future.error('Location permissions are denied');
+        }
+      }
       _textEditingControllerCoordinates.text = (position == null
           ? 'Unknown'
           : position.latitude.toString() +

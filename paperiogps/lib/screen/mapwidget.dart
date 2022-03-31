@@ -13,11 +13,19 @@ class MapWidget extends StatefulWidget {
 }
 
 class _MapWidgetState extends State<MapWidget> {
+
   LatLng _markerPoint = LatLng(47.3729, 18.9962);
+  Polyline pathPolyline = Polyline(
+    points: [],
+    strokeWidth: 2.0,
+    color: Color.fromARGB(200, 72, 0, 113),
+  );
   List<Polygon> _polygons = List<Polygon>();
+  List<Polyline> _polylines = List<Polyline>();
 
   _MapWidgetState() {
     //updateMarkerLocation(47.2729, 18.9962);
+    _polylines.add(pathPolyline)
     proba();
   }
 
@@ -35,6 +43,7 @@ class _MapWidgetState extends State<MapWidget> {
             subdomains: ['a', 'b', 'c'],
           ),
           PolygonLayerOptions(polygons: _polygons),
+          PolylineLayerOptions(polylines: _polylines),
           MarkerLayerOptions(
             markers: [
               Marker(
@@ -70,6 +79,7 @@ class _MapWidgetState extends State<MapWidget> {
     lat ??= 46.9;
     lng ??= 19.4;
     _markerPoint = LatLng(lat, lng);
+    _polylines[0].points.add(_markerPoint);
     setState(() {});
   }
 
