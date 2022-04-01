@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:js';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import "package:latlong2/latlong.dart";
@@ -10,17 +13,18 @@ class MapWidget extends StatefulWidget {
 
   //@override
   _MapWidgetState createState() => state = _MapWidgetState();
+
+  void updateGrid(String grid) {}
 }
 
 class _MapWidgetState extends State<MapWidget> {
-
   LatLng _markerPoint = LatLng(47.3729, 18.9962);
   Polyline pathPolyline = Polyline(
     points: [],
     strokeWidth: 2.0,
     color: Color.fromARGB(200, 72, 0, 113),
   );
-  List<Polygon> _polygons = List<Polygon>();
+  List<List<Polygon>> _polygons;
   List<Polyline> _polylines = List<Polyline>();
 
   _MapWidgetState() {
@@ -42,7 +46,6 @@ class _MapWidgetState extends State<MapWidget> {
             urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
             subdomains: ['a', 'b', 'c'],
           ),
-          PolygonLayerOptions(polygons: _polygons),
           PolylineLayerOptions(polylines: _polylines),
           MarkerLayerOptions(
             markers: [
@@ -89,15 +92,25 @@ class _MapWidgetState extends State<MapWidget> {
     polygonLatLongs.add(LatLng(46.9273, 19.4562));
     polygonLatLongs.add(LatLng(46.9273, 19.4965));
     polygonLatLongs.add(LatLng(46.9492, 19.4965));
+  }
 
-    //debugPrint("itt jar")
-    _polylines[0].points.add(LatLng(46.9300, 19.4700));
-    _polylines[0].points.add(LatLng(46.9350, 19.4750));
-    _polylines[0].points.add(LatLng(46.9370, 19.4720));
-    _polygons.add(Polygon(
-        points: polygonLatLongs,
-        color: Color.fromARGB(100, 40, 30, 128),
-        borderColor: Colors.red,
-        borderStrokeWidth: 1));
+  void updateGrid(String _grid) {
+    JsArray grid = jsonDecode(_grid);
+
+    if (_polygons.length != grid.length) {
+      _polygons.clear();
+      for (int i = 0; i < grid.length; i++) {
+        _polygons.add(List<Polygon>.filled(grid[0].length, new Polygon()));
+      }
+    }
+
+    for (int i = 0; i < _polygons.length; i++) {
+      for (int j = 0; j < _polygons[i].length; j++) {
+        Polygon p = _polygons[i][j];
+        if (grid[i][j]["owner"]) {
+          print("kkkkkk\n");
+        }
+      }
+    }
   }
 }

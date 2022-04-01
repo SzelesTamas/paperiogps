@@ -14,7 +14,7 @@ class GameMainPage extends StatefulWidget {
 
 class _GameMainPageState extends State<GameMainPage> {
   DateFormat _dateTime;
-  WebSocketAPI _wsapi = WebSocketAPI.gameMainScreenAPI();
+  WebSocketAPI _wsapi;
   MapWidget _mapwidget = MapWidget();
   final _textEditingControllerCoordinates = TextEditingController();
   final LocationSettings _locationSettings = const LocationSettings(
@@ -23,6 +23,7 @@ class _GameMainPageState extends State<GameMainPage> {
   );
 
   _GameMainPageState() {
+    _wsapi = WebSocketAPI.gameMainScreenAPI(updateGrid);
     _wsapi.fillUserData();
     getLocation();
   }
@@ -89,5 +90,9 @@ class _GameMainPageState extends State<GameMainPage> {
           .updateMarkerLocation(position.latitude, position.longitude);
       _wsapi.sendLocationData(position, DateTime.now().millisecondsSinceEpoch);
     });
+  }
+
+  void updateGrid(String grid) {
+    _mapwidget.updateGrid(grid);
   }
 }

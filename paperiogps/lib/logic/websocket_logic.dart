@@ -18,9 +18,12 @@ class WebSocketAPI {
     });
   }
 
-  WebSocketAPI.gameMainScreenAPI() {
+  WebSocketAPI.gameMainScreenAPI(updateGrid) {
     _channel.stream.listen((data) {
       var msg = jsonDecode(data);
+      if (msg["type"] == "arenaData") {
+        updateGrid(msg["arenaData"]);
+      }
     });
   }
 
