@@ -515,10 +515,10 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
   void changeIsRememberMeState(state) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool("isRememberedUser", state);
-    if (state) {
-      _textEditingControllerUsername.text = prefs.getString("username");
-      _textEditingControllerPassword.text = prefs.getString("password");
-    }
+    //if (state) {
+    //  _textEditingControllerUsername.text = prefs.getString("username");
+    //  _textEditingControllerPassword.text = prefs.getString("password");
+    //}
     setState(() {
       isRememberMe = state;
     });
