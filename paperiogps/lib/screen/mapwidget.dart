@@ -25,7 +25,7 @@ class _MapWidgetState extends State<MapWidget> {
 
   _MapWidgetState() {
     //updateMarkerLocation(47.2729, 18.9962);
-    _polylines.add(pathPolyline)
+    _polylines.add(pathPolyline);
     proba();
   }
 
@@ -90,8 +90,10 @@ class _MapWidgetState extends State<MapWidget> {
     polygonLatLongs.add(LatLng(46.9273, 19.4965));
     polygonLatLongs.add(LatLng(46.9492, 19.4965));
 
-    //debugPrint("itt jar");
-
+    //debugPrint("itt jar")
+    _polylines[0].points.add(LatLng(46.9300, 19.4700));
+    _polylines[0].points.add(LatLng(46.9350, 19.4750));
+    _polylines[0].points.add(LatLng(46.9370, 19.4720));
     _polygons.add(Polygon(
         points: polygonLatLongs,
         color: Color.fromARGB(100, 40, 30, 128),
