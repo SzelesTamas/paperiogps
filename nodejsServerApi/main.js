@@ -15,6 +15,8 @@ arena2 = new game_lib.Arena("Kerekegyhaza",
     10,
 )
 
+console.log("Siker");
+
 //arena = arena2;
 
 const wss = new WebSocketServer.Server({
