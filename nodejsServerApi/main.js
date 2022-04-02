@@ -24,7 +24,7 @@ const wss = new WebSocketServer.Server({
 });
 
 const con = mysql.createConnection({
-    host: "localhost",
+    host: "nvsrv",
     port: 3306,
     user: "mapconquest",
     password: "",
