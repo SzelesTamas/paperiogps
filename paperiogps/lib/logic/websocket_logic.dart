@@ -10,6 +10,7 @@ class WebSocketAPI {
   WebSocketAPI.signupAPI(changeisSuccessfulSignup, changeisSuccessfulSignin) {
     _channel.stream.listen((data) {
       var msg = jsonDecode(data);
+      debugPrint(msg);
       if (msg["type"] == "checkUserSignupReturn") {
         changeisSuccessfulSignup(msg["returnValue"]);
       } else if (msg["type"] == "checkUserSigninReturn") {
@@ -36,7 +37,7 @@ class WebSocketAPI {
       "longitude": location.longitude,
       "timeSinceEpoch": timeSinceEpoch
     };
-    this._channel.sink.add(jsonEncode(toSend));
+    _channel.sink.add(jsonEncode(toSend));
   }
 
   void sendDataSignup(username, password, email, isMale) {
@@ -47,7 +48,7 @@ class WebSocketAPI {
       "email": email,
       "isMale": isMale
     };
-    this._channel.sink.add(jsonEncode(toSend));
+    _channel.sink.add(jsonEncode(toSend));
   }
 
   void sendDataSignin(username, password, isRememberMe) {
@@ -57,7 +58,7 @@ class WebSocketAPI {
       "password": password,
       "rememberMe": isRememberMe,
     };
-    this._channel.sink.add(jsonEncode(toSend));
+    _channel.sink.add(jsonEncode(toSend));
   }
 
   void fillUserData() async {
@@ -66,7 +67,7 @@ class WebSocketAPI {
       "type": "fillUserData",
       "username": prefs.getString("username")
     };
-    this._channel.sink.add(jsonEncode(toSend));
+    _channel.sink.add(jsonEncode(toSend));
   }
 
   @override

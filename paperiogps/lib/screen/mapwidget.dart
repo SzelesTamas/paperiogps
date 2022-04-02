@@ -1,9 +1,10 @@
 import 'dart:convert';
-import 'dart:js';
+//import 'dart:js';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import "package:latlong2/latlong.dart";
+import 'package:paperiogps/config/palette.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:collection';
 
@@ -95,8 +96,8 @@ class _MapWidgetState extends State<MapWidget> {
   }
 
   void updateGrid(String _grid) {
-    JsArray grid = jsonDecode(_grid);
-
+    dynamic grid = jsonDecode(_grid);
+    debugPrint(_grid);
     if (_polygons.length != grid.length) {
       _polygons.clear();
       for (int i = 0; i < grid.length; i++) {
@@ -106,9 +107,15 @@ class _MapWidgetState extends State<MapWidget> {
 
     for (int i = 0; i < _polygons.length; i++) {
       for (int j = 0; j < _polygons[i].length; j++) {
-        Polygon p = _polygons[i][j];
-        if (grid[i][j]["owner"]) {
-          print("kkkkkk\n");
+        dynamic field = jsonDecode(grid[i][j]);
+        if (field["owner"] == "none") {
+          _polygons[i][j] = new Polygon(color: Colors.transparent);
+        } else {
+          if (field["isTail"]) {
+            _polygons[i][j] = new Polygon(color: Color.fromARGB(50, 0, 0, 0));
+          } else {
+            _polygons[i][j] = new Polygon(color: Color.fromARGB(75, 0, 0, 0));
+          }
         }
       }
     }
