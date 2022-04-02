@@ -15,7 +15,7 @@ arena2 = new game_lib.Arena("Kerekegyhaza",
     10,
 )
 
-console.log("Siker");
+console.log("V12");
 
 //arena = arena2;
 
