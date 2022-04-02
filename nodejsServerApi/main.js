@@ -26,9 +26,9 @@ const wss = new WebSocketServer.Server({
 const con = mysql.createConnection({
     host: "localhost",
     port: 3308,
-    user: "root",
+    user: "mapconquest",
     password: "",
-    database: "paperiogps"
+    database: "mapconquest"
 });
 
 const clients = new Map();
@@ -282,3 +282,4 @@ con.connect(function (err) {
 
 debugPrint("The WebSocket server is running on port 8080");
 
+setTimeout(arena.sendDataToPlayers, 100);
