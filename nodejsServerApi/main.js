@@ -27,7 +27,7 @@ const con = mysql.createConnection({
     host: "nvsrv",
     port: 3306,
     user: "mapconquest",
-    password: "",
+    password: "password",
     database: "mapconquest"
 });
 
