@@ -230,6 +230,7 @@ wss.on("connection", async function (ws) {
             ws.send(JSON.stringify(toSend));
         }
         else if (msg.type == "checkUserSignin") {
+            console.log(msg);
             var ret = await isValidUsernamePassword(msg.username, msg.password)
             var toSend = {
                 type: "checkUserSigninReturn",
