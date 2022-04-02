@@ -281,5 +281,3 @@ con.connect(function (err) {
 
 
 debugPrint("The WebSocket server is running on port 8080");
-
-setTimeout(arena.sendDataToPlayers, 100);
