@@ -5,15 +5,17 @@ const { send } = require('express/lib/response');
 const game_lib = require("boundary_fill.js")
 
 arena = new game_lib.Arena("Szigetszentmiklos",
-    new game_lib.MapPoint(47.372974, 18.996256),
-    new game_lib.MapPoint(47.306302, 19.072626),
+    { latitude: 47.372974, longitude: 18.996256 },
+    { latitude: 47.306302, longitude: 19.072626 },
     100,
 )
+/*
 arena2 = new game_lib.Arena("Kerekegyhaza",
     new game_lib.MapPoint(46.9492, 19.4562),
     new game_lib.MapPoint(46.9273, 19.4965),
     10,
 )
+*/
 
 console.log("V13");
 
