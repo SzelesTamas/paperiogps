@@ -10,7 +10,6 @@ class WebSocketAPI {
   WebSocketAPI.signupAPI(changeisSuccessfulSignup, changeisSuccessfulSignin) {
     _channel.stream.listen((data) {
       var msg = jsonDecode(data);
-      debugPrint(msg);
       if (msg["type"] == "checkUserSignupReturn") {
         changeisSuccessfulSignup(msg["returnValue"]);
       } else if (msg["type"] == "checkUserSigninReturn") {
@@ -23,7 +22,7 @@ class WebSocketAPI {
     _channel.stream.listen((data) {
       var msg = jsonDecode(data);
       if (msg["type"] == "arenaData") {
-        updateGrid(msg["arenaData"]);
+        updateGrid(data);
       }
     });
   }

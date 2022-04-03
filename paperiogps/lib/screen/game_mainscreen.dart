@@ -93,6 +93,6 @@ class _GameMainPageState extends State<GameMainPage> {
   }
 
   void updateGrid(String grid) {
-    _mapwidget.updateGrid(grid);
+    _mapwidget.state.updateGrid(grid);
   }
 }
