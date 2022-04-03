@@ -9,11 +9,13 @@ arena = new game_lib.Arena("Szigetszentmiklos1",
     new game_lib.MapPoint(47.306302, 19.072626),
     100,
 )
+/*
 arena2 = new game_lib.Arena("Kerekegyhaza",
     new game_lib.MapPoint(46.9492, 19.4562),
     new game_lib.MapPoint(46.9273, 19.4965),
     10,
 )
+*/
 
 console.log("V13");
 
