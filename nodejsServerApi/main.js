@@ -242,7 +242,6 @@ wss.on("connection", async function (ws) {
             ws.send(JSON.stringify(toSend));
         }
         else if (msg.type == "userLocationData") {
-            debugPrint(msg);
             addCoordsOfUser(await getUserIDFromUsername(msg.username), msg.latitude, msg.longitude, msg.timeSinceEpoch);
         }
         else if (msg.type == "fillUserData") {
