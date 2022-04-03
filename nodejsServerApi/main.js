@@ -8,7 +8,7 @@ arena = new game_lib.Arena("Szigetszentmiklos",
     { latitude: 47.372974, longitude: 18.996256 },
     { latitude: 47.306302, longitude: 19.072626 },
     100,
-)
+);
 /*
 arena2 = new game_lib.Arena("Kerekegyhaza",
     new game_lib.MapPoint(46.9492, 19.4562),
