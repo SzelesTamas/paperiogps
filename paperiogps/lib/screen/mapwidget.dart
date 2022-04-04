@@ -56,41 +56,44 @@ class _MapWidgetState extends State<MapWidget> {
 
   @override
   Widget build(BuildContext context) {
-    Timer.periodic(const Duration(milliseconds: 2000),(timer){
+    Timer.periodic(const Duration(milliseconds: 500),(timer){
       if(_mapController.center != _markerPoint){
         _mapController.move(_markerPoint, _mapController.zoom);
       }
     });
     return Stack(children: [
-      FlutterMap(
-        mapController: _mapController,
-        options: MapOptions(
-          center: _markerPoint,
-          zoom: 13.0,
-        ),
-        layers: [
-          TileLayerOptions(
-            urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-            subdomains: ['a', 'b', 'c'],
+      IgnorePointer(
+        child: FlutterMap(
+          mapController: _mapController,
+          options: MapOptions(
+            center: _markerPoint,
+            allowPanning: false,
+            zoom: 15,
           ),
-          PolygonLayerOptions(polygons: _arenaPolygons), //ARENA BOUNDARIES
-          PolygonLayerOptions(polygons: _polygons), //CAPTURED FIELDS
-          PolylineLayerOptions(polylines: _polylines),
-          MarkerLayerOptions(
-            markers: [
-              Marker(
-                width: 80.0,
-                height: 80.0,
-                point: _markerPoint,
-                builder: (ctx) => const Icon(
-                  Icons.location_pin,
-                  color: Colors.red,
-                  size: 24,
+          layers: [
+            TileLayerOptions(
+              urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+              subdomains: ['a', 'b', 'c'],
+            ),
+            PolygonLayerOptions(polygons: _arenaPolygons), //ARENA BOUNDARIES
+            PolygonLayerOptions(polygons: _polygons), //CAPTURED FIELDS
+            PolylineLayerOptions(polylines: _polylines),
+            MarkerLayerOptions(
+              markers: [
+                Marker(
+                  width: 80.0,
+                  height: 80.0,
+                  point: _markerPoint,
+                  builder: (ctx) => const Icon(
+                    Icons.location_pin,
+                    color: Colors.red,
+                    size: 24,
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
       /*
       Positioned(
