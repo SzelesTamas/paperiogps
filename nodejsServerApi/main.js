@@ -17,9 +17,18 @@ arena2 = new game_lib.Arena("Kerekegyhaza",
 )
 */
 
-console.log("V13");
 
-//arena = arena2;
+
+arena3 = new game_lib.Arena("Prezi",
+    new game_lib.MapPoint(47.5102, 19.0521),
+    new game_lib.MapPoint(47.5031, 19.0608),
+    200,
+)
+
+
+console.log("V14");
+
+//arena = arena3;
 
 const wss = new WebSocketServer.Server({
     port: 8080
