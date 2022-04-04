@@ -169,8 +169,9 @@ class _MapWidgetState extends State<MapWidget> {
     if(!hasDrawnArena){
       _arenaPolygons.clear();
       _arenaPolygons.add(Polygon(
-        color: const Color(0x8D5490A3),
-        borderColor: Colors.blueAccent,
+        color: Colors.transparent,
+        borderColor: const Color(0xFF004F71),
+        borderStrokeWidth: 2,
         points: [
           LatLng(upperLeftCorner.lat, upperLeftCorner.lng),
           //LatLng(upperLeftCorner.lat, upperLeftCorner.lng),
