@@ -158,8 +158,8 @@ class _MapWidgetState extends State<MapWidget> {
     int dim2 = grid[0].length;
     Point upperLeftCorner = Point(
         data["upperLeftCornerLatitude"], data["upperLeftCornerLongitude"]);
-    //Point lowerRightCorner = Point(
-    //    data["lowerRightCornerLatitude"], data["lowerRightCornerLongitude"]);
+    Point lowerRightCorner = Point(
+        data["lowerRightCornerLatitude"], data["lowerRightCornerLongitude"]);
     double gridUnitSize = data["gridUnitSize"];
 
     //debugPrint('dim1: $dim1');
@@ -173,13 +173,13 @@ class _MapWidgetState extends State<MapWidget> {
         borderColor: Colors.blueAccent,
         points: [
           LatLng(upperLeftCorner.lat, upperLeftCorner.lng),
-          LatLng(upperLeftCorner.lat, upperLeftCorner.lng),
-          LatLng(upperLeftCorner.lat, upperLeftCorner.lng),
-          LatLng(upperLeftCorner.lat, upperLeftCorner.lng),
+          //LatLng(upperLeftCorner.lat, upperLeftCorner.lng),
+          //LatLng(upperLeftCorner.lat, upperLeftCorner.lng),
+          //LatLng(upperLeftCorner.lat, upperLeftCorner.lng),
 
-          //LatLng(upperLeftCorner.lat, lowerRightCorner.lng),
-          //LatLng(lowerRightCorner.lat, lowerRightCorner.lng),
-          //LatLng(lowerRightCorner.lat, upperLeftCorner.lng)
+          LatLng(upperLeftCorner.lat, lowerRightCorner.lng),
+          LatLng(lowerRightCorner.lat, lowerRightCorner.lng),
+          LatLng(lowerRightCorner.lat, upperLeftCorner.lng)
         ],
       ));
       hasDrawnArena = true;
