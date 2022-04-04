@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:ffi';
+import 'dart:math';
 //import 'dart:js';
 
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import "package:latlong2/latlong.dart";
 import 'package:paperiogps/config/palette.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:collection';
+import 'package:paperiogps/config/player_colors.dart';
 
 class MapWidget extends StatefulWidget {
   MapWidget({Key key}) : super(key: key);
@@ -36,11 +38,15 @@ class _MapWidgetState extends State<MapWidget> {
   );
   List<Polygon> _polygons;
   List<Polyline> _polylines = List<Polyline>();
+  Map<String, int> _playerColors = Map<String, int>();
+  int _gameRandSeed;
 
   _MapWidgetState() {
     //updateMarkerLocation(47.2729, 18.9962);
     _polylines.add(pathPolyline);
     _polygons = <Polygon>[];
+    Random rnd = Random();
+    _gameRandSeed = rnd.nextInt(1000);
     //proba();
   }
 
@@ -139,16 +145,30 @@ class _MapWidgetState extends State<MapWidget> {
     //debugPrint('dim1: $dim1');
     //debugPrint('dim2: $dim2');
     String owner;
+    bool isTail;
 
     _polygons.clear();
     for (int i = 0; i < dim1; i++) {
       for (int j = 0; j < dim2; j++) {
         owner = grid[i][j]["owner"].toString();
+        isTail = grid[i][j]["isTail"];
 
         if (owner != "none") {
+          if (!_playerColors.containsKey(owner)) {
+            _playerColors[owner] = _playerColors.length + _gameRandSeed;
+          }
+          Color col;
+          if (isTail) {
+            col = PlayerColor.selectColor(
+                _playerColors[owner], PlayerColor.tailFieldAlpha);
+          } else {
+            col = PlayerColor.selectColor(
+                _playerColors[owner], PlayerColor.ownedFieldAlpha);
+          }
+
           _polygons.add(new Polygon(
               points: makeField(i, j, upperLeftCorner, gridUnitSize),
-              color: Color.fromARGB(134, 255, 0, 0)));
+              color: col));
         }
       }
     }
