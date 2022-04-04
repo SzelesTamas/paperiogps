@@ -132,9 +132,25 @@ class _MapWidgetState extends State<MapWidget> {
     return out;
   }
 
+  Polygon drawPlayer(double lat, double lng,
+      {double size = 0.1, Color color = Colors.black}) {
+    Point upperLeftCorner = Point(lat + size / 2, lng - size / 2);
+
+    List<LatLng> points = List<LatLng>();
+    points.add(LatLng(upperLeftCorner.lat, upperLeftCorner.lng));
+    points.add(LatLng(upperLeftCorner.lat - size, upperLeftCorner.lng));
+    points.add(LatLng(upperLeftCorner.lat - size, upperLeftCorner.lng + size));
+    points.add(LatLng(upperLeftCorner.lat, upperLeftCorner.lng + size));
+
+    Polygon out = Polygon(points: points, color: color);
+    return out;
+  }
+
   void updateGrid(String _data) {
     Map<String, dynamic> data = jsonDecode(_data);
     dynamic grid = jsonDecode(data["arenaData"]);
+    List<dynamic> playerPositions = jsonDecode(data["playerPositions"]);
+    String ownId = data["ownId"].toString();
 
     int dim1 = grid.length;
     int dim2 = grid[0].length;
@@ -147,6 +163,7 @@ class _MapWidgetState extends State<MapWidget> {
     String owner;
     bool isTail;
 
+    // updating grid
     _polygons.clear();
     for (int i = 0; i < dim1; i++) {
       for (int j = 0; j < dim2; j++) {
@@ -171,6 +188,18 @@ class _MapWidgetState extends State<MapWidget> {
               color: col));
         }
       }
+    }
+
+    // updating other player position
+    dynamic player;
+    double plat, plng;
+    for (String str in playerPositions) {
+      player = jsonDecode(str);
+      if (player["id"].toString() == ownId) continue;
+      debugPrint(player["latitude"].toString());
+      plat = player["latitude"];
+      plng = player["longitude"];
+      _polygons.add(drawPlayer(plat, plng));
     }
   }
 }
