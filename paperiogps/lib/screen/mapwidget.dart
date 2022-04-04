@@ -133,7 +133,7 @@ class _MapWidgetState extends State<MapWidget> {
   }
 
   Polygon drawPlayer(double lat, double lng,
-      {double size = 0.1, Color color = Colors.black}) {
+      {double size = 0.0001, Color color = Colors.black}) {
     Point upperLeftCorner = Point(lat + size / 2, lng - size / 2);
 
     List<LatLng> points = List<LatLng>();
