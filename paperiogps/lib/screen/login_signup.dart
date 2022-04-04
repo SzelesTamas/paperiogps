@@ -16,7 +16,7 @@ class LoginSignupScreen extends StatefulWidget {
 
 class _LoginSignupScreenState extends State<LoginSignupScreen> {
   bool isMale = true;
-  bool isSignupScreen = true;
+  bool isSignupScreen = false;
   bool isRememberMe = false;
   bool isKeyboardVisible = false;
   bool isSuccessfulSignup = false;

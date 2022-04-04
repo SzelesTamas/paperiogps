@@ -35,7 +35,9 @@ class _MapWidgetState extends State<MapWidget> {
     color: Color.fromARGB(200, 72, 0, 113),
   );
   List<Polygon> _polygons;
-  List<Polyline> _polylines = List<Polyline>();
+  List<Polygon> _arenaPolygons = <Polygon>[];
+  bool hasDrawnArena = false;
+  List<Polyline> _polylines = <Polyline>[];
   Map<String, int> _playerColors = Map<String, int>();
   int _gameRandSeed;
 
@@ -43,6 +45,7 @@ class _MapWidgetState extends State<MapWidget> {
     //updateMarkerLocation(47.2729, 18.9962);
     _polylines.add(pathPolyline);
     _polygons = <Polygon>[];
+
     Random rnd = Random();
     _gameRandSeed = rnd.nextInt(1000);
     //proba();
@@ -61,8 +64,9 @@ class _MapWidgetState extends State<MapWidget> {
             urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
             subdomains: ['a', 'b', 'c'],
           ),
+          PolygonLayerOptions(polygons: _arenaPolygons), //ARENA BOUNDARIES
+          PolygonLayerOptions(polygons: _polygons), //CAPTURED FIELDS
           PolylineLayerOptions(polylines: _polylines),
-          PolygonLayerOptions(polygons: _polygons),
           MarkerLayerOptions(
             markers: [
               Marker(
@@ -154,13 +158,32 @@ class _MapWidgetState extends State<MapWidget> {
     int dim2 = grid[0].length;
     Point upperLeftCorner = Point(
         data["upperLeftCornerLatitude"], data["upperLeftCornerLongitude"]);
+    //Point lowerRightCorner = Point(
+    //    data["lowerRightCornerLatitude"], data["lowerRightCornerLongitude"]);
     double gridUnitSize = data["gridUnitSize"];
 
     //debugPrint('dim1: $dim1');
     //debugPrint('dim2: $dim2');
     String owner;
     bool isTail;
+    if(!hasDrawnArena){
+      _arenaPolygons.clear();
+      _arenaPolygons.add(Polygon(
+        color: const Color(0x8D5490A3),
+        borderColor: Colors.blueAccent,
+        points: [
+          LatLng(upperLeftCorner.lat, upperLeftCorner.lng),
+          LatLng(upperLeftCorner.lat, upperLeftCorner.lng),
+          LatLng(upperLeftCorner.lat, upperLeftCorner.lng),
+          LatLng(upperLeftCorner.lat, upperLeftCorner.lng),
 
+          //LatLng(upperLeftCorner.lat, lowerRightCorner.lng),
+          //LatLng(lowerRightCorner.lat, lowerRightCorner.lng),
+          //LatLng(lowerRightCorner.lat, upperLeftCorner.lng)
+        ],
+      ));
+      hasDrawnArena = true;
+    }
     // updating grid
     _polygons.clear();
     for (int i = 0; i < dim1; i++) {
@@ -181,7 +204,7 @@ class _MapWidgetState extends State<MapWidget> {
                 _playerColors[owner], PlayerColor.ownedFieldAlpha);
           }
 
-          _polygons.add(new Polygon(
+          _polygons.add(Polygon(
               points: makeField(i, j, upperLeftCorner, gridUnitSize),
               color: col));
         }
