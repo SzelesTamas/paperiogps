@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
@@ -41,11 +42,13 @@ class _MapWidgetState extends State<MapWidget> {
   Map<String, int> _playerColors = Map<String, int>();
   int _gameRandSeed;
 
+  MapController _mapController;
+
   _MapWidgetState() {
     //updateMarkerLocation(47.2729, 18.9962);
     _polylines.add(pathPolyline);
     _polygons = <Polygon>[];
-
+    _mapController = MapController();
     Random rnd = Random();
     _gameRandSeed = rnd.nextInt(1000);
     //proba();
@@ -53,8 +56,14 @@ class _MapWidgetState extends State<MapWidget> {
 
   @override
   Widget build(BuildContext context) {
+    Timer.periodic(const Duration(milliseconds: 2000),(timer){
+      if(_mapController.center != _markerPoint){
+        _mapController.move(_markerPoint, _mapController.zoom);
+      }
+    });
     return Stack(children: [
       FlutterMap(
+        mapController: _mapController,
         options: MapOptions(
           center: _markerPoint,
           zoom: 13.0,
@@ -166,6 +175,7 @@ class _MapWidgetState extends State<MapWidget> {
     //debugPrint('dim2: $dim2');
     String owner;
     bool isTail;
+
     if(!hasDrawnArena){
       _arenaPolygons.clear();
       _arenaPolygons.add(Polygon(
@@ -174,10 +184,6 @@ class _MapWidgetState extends State<MapWidget> {
         borderStrokeWidth: 2,
         points: [
           LatLng(upperLeftCorner.lat, upperLeftCorner.lng),
-          //LatLng(upperLeftCorner.lat, upperLeftCorner.lng),
-          //LatLng(upperLeftCorner.lat, upperLeftCorner.lng),
-          //LatLng(upperLeftCorner.lat, upperLeftCorner.lng),
-
           LatLng(upperLeftCorner.lat, lowerRightCorner.lng),
           LatLng(lowerRightCorner.lat, lowerRightCorner.lng),
           LatLng(lowerRightCorner.lat, upperLeftCorner.lng)
