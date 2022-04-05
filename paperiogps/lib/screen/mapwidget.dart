@@ -71,7 +71,7 @@ class _MapWidgetState extends State<MapWidget> {
           minZoom: MapConfig.minZoom,
           zoom: MapConfig.zoom,
           maxZoom: MapConfig.maxZoom,
-          interactiveFlags: InteractiveFlag.drag,
+          interactiveFlags: MapConfig.iflag,
         ),
         layers: [
           TileLayerOptions(
