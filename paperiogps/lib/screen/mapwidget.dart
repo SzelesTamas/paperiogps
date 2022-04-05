@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import "package:latlong2/latlong.dart";
+import 'package:paperiogps/config/mapconfig.dart';
 import 'package:paperiogps/config/palette.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:collection';
@@ -56,7 +57,7 @@ class _MapWidgetState extends State<MapWidget> {
 
   @override
   Widget build(BuildContext context) {
-    Timer.periodic(const Duration(milliseconds: 500), (timer) {
+    Timer.periodic(const Duration(milliseconds: 3000), (timer) {
       if (_mapController.center != _markerPoint) {
         //_mapController.move(_markerPoint, _mapController.zoom);
       }
@@ -66,8 +67,11 @@ class _MapWidgetState extends State<MapWidget> {
         mapController: _mapController,
         options: MapOptions(
           center: _markerPoint,
-          allowPanning: false,
-          zoom: 15,
+          allowPanning: MapConfig.allowPanning,
+          minZoom: MapConfig.minZoom,
+          zoom: MapConfig.zoom,
+          maxZoom: MapConfig.maxZoom,
+          interactiveFlags: InteractiveFlag.drag,
         ),
         layers: [
           TileLayerOptions(
@@ -84,7 +88,7 @@ class _MapWidgetState extends State<MapWidget> {
                 height: 80.0,
                 point: _markerPoint,
                 builder: (ctx) => const Icon(
-                  Icons.location_pin,
+                  Icons.local_pizza_outlined,
                   color: Colors.red,
                   size: 24,
                 ),

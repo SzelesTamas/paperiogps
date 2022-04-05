@@ -44,8 +44,8 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
             child: Container(
                 height: 300,
                 decoration: const BoxDecoration(
-                    image: const DecorationImage(
-                        image: const AssetImage("images/background.jpg"),
+                    image: DecorationImage(
+                        image: AssetImage("images/background.jpg"),
                         fit: BoxFit.cover)),
                 child: Container(
                   padding: const EdgeInsets.only(top: 90, left: 20),
@@ -76,7 +76,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                       Text(
                         isSignupScreen
                             ? "Signup to Continue"
-                            : "Signin to Continue",
+                            : "Sign in to Continue",
                         style: TextStyle(
                           letterSpacing: 1,
                           color: Colors.white,
@@ -497,10 +497,10 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
         _textEditingControllerPassword.text = prefs.getString('password');
       } else {
         changeIsRememberMeState(false);
-        prefs.setString("username", "");
-        prefs.setString("password", "");
-        _textEditingControllerPassword.text = "";
-        _textEditingControllerUsername.text = "";
+        //prefs.setString("username", "");
+        //prefs.setString("password", "");
+        //_textEditingControllerPassword.text = "";
+        //_textEditingControllerUsername.text = "";
       }
     } else {
       _textEditingControllerEmail.text = "";

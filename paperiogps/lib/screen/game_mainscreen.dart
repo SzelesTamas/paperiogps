@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
+import 'package:paperiogps/config/palette.dart';
 import 'package:paperiogps/screen/mapwidget.dart';
+import 'package:paperiogps/screen/setting_drawer.dart';
 import '../logic/websocket_logic.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -40,6 +42,7 @@ class _GameMainPageState extends State<GameMainPage> {
           ),
         ]),
       ),
+      drawer: const SettingDrawerWidget(),
     );
   }
 
