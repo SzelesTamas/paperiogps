@@ -58,7 +58,7 @@ class _MapWidgetState extends State<MapWidget> {
   Widget build(BuildContext context) {
     Timer.periodic(const Duration(milliseconds: 500), (timer) {
       if (_mapController.center != _markerPoint) {
-        _mapController.move(_markerPoint, _mapController.zoom);
+        //_mapController.move(_markerPoint, _mapController.zoom);
       }
     });
     return Stack(children: [
@@ -145,7 +145,7 @@ class _MapWidgetState extends State<MapWidget> {
   }
 
   Polygon drawPlayer(double lat, double lng,
-      {double size = 0.0001, Color color = Colors.black}) {
+      {double size = 0.00001, Color color = Colors.black}) {
     Point upperLeftCorner = Point(lat + size / 2, lng - size / 2);
 
     List<LatLng> points = List<LatLng>();
@@ -175,7 +175,7 @@ class _MapWidgetState extends State<MapWidget> {
     //debugPrint('dim1: $dim1');
     //debugPrint('dim2: $dim2');
     String owner;
-    bool isTail;
+    String tailOwner;
 
     if (!hasDrawnArena) {
       _arenaPolygons.clear();
@@ -197,25 +197,30 @@ class _MapWidgetState extends State<MapWidget> {
     for (int i = 0; i < dim1; i++) {
       for (int j = 0; j < dim2; j++) {
         owner = grid[i][j]["owner"].toString();
-        isTail = grid[i][j]["isTail"];
+        tailOwner = grid[i][j]["tailOwner"].toString();
 
-        if (owner != "none") {
+        if (owner == "none" && tailOwner == "none") continue;
+
+        Color col;
+
+        debugPrint(owner);
+
+        if (tailOwner != "none") {
+          if (!_playerColors.containsKey(tailOwner)) {
+            _playerColors[tailOwner] = _playerColors.length + _gameRandSeed;
+          }
+          col = PlayerColor.selectColor(
+              _playerColors[tailOwner], PlayerColor.tailFieldAlpha);
+        } else if (owner != "none") {
           if (!_playerColors.containsKey(owner)) {
             _playerColors[owner] = _playerColors.length + _gameRandSeed;
           }
-          Color col;
-          if (isTail) {
-            col = PlayerColor.selectColor(
-                _playerColors[owner], PlayerColor.tailFieldAlpha);
-          } else {
-            col = PlayerColor.selectColor(
-                _playerColors[owner], PlayerColor.ownedFieldAlpha);
-          }
-
-          _polygons.add(Polygon(
-              points: makeField(i, j, upperLeftCorner, gridUnitSize),
-              color: col));
+          col = PlayerColor.selectColor(
+              _playerColors[owner], PlayerColor.ownedFieldAlpha);
         }
+        _polygons.add(Polygon(
+            points: makeField(i, j, upperLeftCorner, gridUnitSize),
+            color: col));
       }
     }
 
