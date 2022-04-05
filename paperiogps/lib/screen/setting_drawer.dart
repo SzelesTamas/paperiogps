@@ -15,11 +15,9 @@ class SettingDrawerWidget extends StatelessWidget {
         elevation: 1,
         child: Column(
           children: const [
-            Expanded(
-              child: DrawerHeader(
-                  decoration: BoxDecoration(color: Palette.softActiveColor),
-                  child: Text("Settings & some user data"),
-              ),
+            DrawerHeader(
+                decoration: BoxDecoration(color: Palette.softActiveColor),
+                child: Text("Settings & some user data"),
             ),  
             ListTile(
               title: Text("aaaa?"),
