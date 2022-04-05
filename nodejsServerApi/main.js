@@ -28,7 +28,7 @@ arena3 = new game_lib.Arena("Prezi",
 
 console.log("V14");
 
-//arena = arena3;
+arena = arena3;
 
 const wss = new WebSocketServer.Server({
     port: 8080
