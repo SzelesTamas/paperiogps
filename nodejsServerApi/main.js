@@ -17,7 +17,7 @@ arena2 = new game_lib.Arena("Kerekegyhaza",
 )
 */
 
-
+//AHAHAHAHAHAHAH
 
 arena3 = new game_lib.Arena("Prezi",
     new game_lib.MapPoint(47.50438,19.05759),
