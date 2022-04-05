@@ -29,6 +29,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
   _LoginSignupScreenState() {
     _wsapi = WebSocketAPI.signupAPI(
         changeIsSuccessfulSignup, changeIsSuccessfulSignin);
+    changeSignupScreenState(false);
   }
 
   @override
@@ -175,6 +176,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
   }
 
   Container buildSigninSection() {
+    //load prefs
     return Container(
         margin: EdgeInsets.only(top: 20),
         child: Column(
