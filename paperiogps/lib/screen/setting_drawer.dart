@@ -10,18 +10,25 @@ class SettingDrawerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-        key: Key("key"),
+        key: const Key("key"),
         backgroundColor: Palette.backgroundColor,
         elevation: 1,
-        child: ListView(
-          padding: EdgeInsets.zero,
+        child: Column(
           children: const [
-            DrawerHeader(
-                decoration: BoxDecoration(color: Palette.activeColor),
-                child: Text("Settings")),
+            Expanded(
+              child: DrawerHeader(
+                  decoration: BoxDecoration(color: Palette.softActiveColor),
+                  child: Text("Settings & some user data"),
+              ),
+            ),  
             ListTile(
               title: Text("aaaa?"),
               onTap: null,
+            ),
+            Spacer(),
+            Divider(),
+            ListTile(
+              title: Text("logout"),
             )
           ],
         ));
