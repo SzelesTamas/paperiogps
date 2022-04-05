@@ -59,7 +59,7 @@ class _MapWidgetState extends State<MapWidget> {
   Widget build(BuildContext context) {
     Timer.periodic(const Duration(milliseconds: 3000), (timer) {
       if (_mapController.center != _markerPoint) {
-        //_mapController.move(_markerPoint, _mapController.zoom);
+        _mapController.move(_markerPoint, _mapController.zoom);
       }
     });
     return Stack(children: [
