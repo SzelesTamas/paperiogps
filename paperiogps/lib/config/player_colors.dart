@@ -3,8 +3,8 @@ import 'dart:math';
 import 'package:flutter/painting.dart';
 
 class PlayerColor {
-  static int ownedFieldAlpha = 70;
-  static int tailFieldAlpha = 1000;
+  static int ownedFieldAlpha = 1000;
+  static int tailFieldAlpha = 600;
   static Color selectColor(number, alpha) {
     number = number + 10;
 
