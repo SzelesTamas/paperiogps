@@ -44,7 +44,7 @@ arena6 = new game_lib.Arena("Szigetszentmiklos3",
 
 console.log("V14");
 
-arena = arena6;
+//arena = arena6;
 
 const wss = new WebSocketServer.Server({
     port: 8080
