@@ -9,21 +9,12 @@ arena = new game_lib.Arena("Szigetszentmiklos1",
     new game_lib.MapPoint(47.306302, 19.072626),
     100,
 );
-/*
+
 arena2 = new game_lib.Arena("Kerekegyhaza",
     new game_lib.MapPoint(46.9492, 19.4562),
     new game_lib.MapPoint(46.9273, 19.4965),
     10,
 )
-*/
-
-arena4 = new game_lib.Arena("Szigetszentmiklos1",
-    new game_lib.MapPoint(47.34095, 19.03363),
-    new game_lib.MapPoint(47.33756, 19.03936),
-    50,
-);
-
-//AHAHAHAHAHAHAH
 
 arena3 = new game_lib.Arena("Prezi",
     new game_lib.MapPoint(47.50615, 19.05510),
@@ -31,10 +22,23 @@ arena3 = new game_lib.Arena("Prezi",
     100,
 );
 
+arena4 = new game_lib.Arena("Szigetszentmiklos2",
+    new game_lib.MapPoint(47.34095, 19.03363),
+    new game_lib.MapPoint(47.33756, 19.03936),
+    50,
+);
+
+//AHAHAHAHAHAHAH
+
+arena5 = new game_lib.Arena("Szigetszentmiklos3",
+    new game_lib.MapPoint(47.34675, 19.02828),
+    new game_lib.MapPoint(47.34439, 19.03246),
+    100,
+);
 
 console.log("V14");
 
-arena = arena4;
+arena = arena5;
 
 const wss = new WebSocketServer.Server({
     port: 8080
