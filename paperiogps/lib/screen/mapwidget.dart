@@ -229,8 +229,6 @@ class _MapWidgetState extends State<MapWidget> {
     if (!hasDrawnArena) {
       dynamic grid = jsonDecode(data["arenaData"]);
 
-      debugPrint(grid.toString());
-
       int dim1 = grid.length;
       int dim2 = grid[0].length;
       gridSize = Point(dim1.toDouble(), dim2.toDouble());
@@ -255,7 +253,6 @@ class _MapWidgetState extends State<MapWidget> {
       }
 
       drawArenaBoundaries();
-      debugPrint(dim1.toString() + " " + dim2.toString());
       drawGrid(grid);
 
       hasDrawnArena = true;

@@ -95,10 +95,6 @@ class _GameMainPageState extends State<GameMainPage> {
 
       _mapwidget.state
           .updateMarkerLocation(position.latitude, position.longitude);
-      debugPrint("sending " +
-          position.latitude.toString() +
-          " " +
-          position.longitude.toString());
       _wsapi.sendLocationData(position, DateTime.now().millisecondsSinceEpoch);
       if (ownId != -1) {
         _wsapi.sendLastKnownChange(ownId, lastKnownChange);
@@ -108,7 +104,6 @@ class _GameMainPageState extends State<GameMainPage> {
 
   void updateGrid(String _data) {
     Map<String, dynamic> data = jsonDecode(_data);
-    debugPrint(data["type"]);
 
     switch (data["type"]) {
       case "beginningData":
