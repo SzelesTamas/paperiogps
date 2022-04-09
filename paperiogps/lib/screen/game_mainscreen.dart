@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
@@ -23,6 +25,8 @@ class _GameMainPageState extends State<GameMainPage> {
     accuracy: LocationAccuracy.high,
     distanceFilter: 0,
   );
+  int ownId = -1;
+  int lastKnownChange = -1;
 
   _GameMainPageState() {
     _wsapi = WebSocketAPI.gameMainScreenAPI(updateGrid);
@@ -91,11 +95,34 @@ class _GameMainPageState extends State<GameMainPage> {
 
       _mapwidget.state
           .updateMarkerLocation(position.latitude, position.longitude);
+      debugPrint("sending " +
+          position.latitude.toString() +
+          " " +
+          position.longitude.toString());
       _wsapi.sendLocationData(position, DateTime.now().millisecondsSinceEpoch);
+      if (ownId != -1) {
+        _wsapi.sendLastKnownChange(ownId, lastKnownChange);
+      }
     });
   }
 
-  void updateGrid(String grid) {
-    _mapwidget.state.updateGrid(grid);
+  void updateGrid(String _data) {
+    Map<String, dynamic> data = jsonDecode(_data);
+    debugPrint(data["type"]);
+
+    switch (data["type"]) {
+      case "beginningData":
+        ownId = data["ownId"];
+        lastKnownChange = data["lastKnownChange"];
+        _mapwidget.state.drawBeginning(data);
+        break;
+      case "changeLogUpdate":
+        if (_mapwidget.state.hasDrawnArena) {
+          lastKnownChange = data["newLastKnown"];
+          _mapwidget.state.drawNewChanges(data["newChanges"]);
+        }
+        break;
+      default:
+    }
   }
 }

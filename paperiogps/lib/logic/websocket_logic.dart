@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class WebSocketAPI {
-  final _channel = makeWsClient('wss://api.mapconquest.tech');
+  //final _channel = makeWsClient('wss://api.mapconquest.tech');
+  final _channel = makeWsClient('ws://10.0.2.2:8080');
   var _streamBuilder;
 
   WebSocketAPI.signupAPI(changeisSuccessfulSignup, changeisSuccessfulSignin) {
@@ -20,11 +21,13 @@ class WebSocketAPI {
 
   WebSocketAPI.gameMainScreenAPI(updateGrid) {
     _channel.stream.listen((data) {
-      var msg = jsonDecode(data);
-      if (msg["type"] == "arenaData") {
-        updateGrid(data);
-      }
+      updateGrid(data);
     });
+  }
+
+  void sendLastKnownChange(id, lastKnown) {
+    var toSend = {"type": "changeLastKnown", "id": id, "lastKnown": lastKnown};
+    _channel.sink.add(jsonEncode(toSend));
   }
 
   void sendLocationData(location, timeSinceEpoch) async {

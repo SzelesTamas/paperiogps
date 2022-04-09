@@ -42,6 +42,11 @@ class _MapWidgetState extends State<MapWidget> {
   List<Polyline> _polylines = <Polyline>[];
   Map<String, int> _playerColors = Map<String, int>();
   int _gameRandSeed;
+  Point upperLeftCorner, lowerRightCorner;
+  double gridUnitSize;
+  Point gridSize;
+  List<List<int>> tailer = List<List<int>>();
+  List<List<int>> owner = List<List<int>>();
 
   MapController _mapController;
 
@@ -126,15 +131,21 @@ class _MapWidgetState extends State<MapWidget> {
     polygonLatLongs.add(LatLng(46.9273, 19.4562));
     polygonLatLongs.add(LatLng(46.9273, 19.4965));
     polygonLatLongs.add(LatLng(46.9492, 19.4965));
-    Polygon(
+    Polygon p = Polygon(
         points: polygonLatLongs,
         color: Color.fromARGB(100, 40, 30, 128),
         borderColor: Colors.red,
         borderStrokeWidth: 1);
   }
 
-  List<LatLng> makeField(
-      int lat, int lng, Point upperLeftCorner, double gridUnitSize) {
+  void changeFieldColor(int lat, int lng, Color newColor) {
+    List<LatLng> points = makeField(lat, lng);
+
+    int ind = lat * gridSize.lng.toInt() + lng;
+    _polygons[ind] = new Polygon(points: points, color: newColor);
+  }
+
+  List<LatLng> makeField(int lat, int lng) {
     List<LatLng> out = List<LatLng>();
     out.add(LatLng(upperLeftCorner.lat - lat * gridUnitSize,
         upperLeftCorner.lng + lng * gridUnitSize));
@@ -162,52 +173,38 @@ class _MapWidgetState extends State<MapWidget> {
     return out;
   }
 
-  void updateGrid(String _data) {
-    Map<String, dynamic> data = jsonDecode(_data);
-    dynamic grid = jsonDecode(data["arenaData"]);
-    List<dynamic> playerPositions = jsonDecode(data["playerPositions"]);
-    String ownId = data["ownId"].toString();
+  void drawArenaBoundaries() {
+    _arenaPolygons.clear();
+    _arenaPolygons.add(Polygon(
+      color: Colors.transparent,
+      borderColor: const Color(0xFF004F71),
+      borderStrokeWidth: 2,
+      points: [
+        LatLng(upperLeftCorner.lat, upperLeftCorner.lng),
+        LatLng(upperLeftCorner.lat, lowerRightCorner.lng),
+        LatLng(lowerRightCorner.lat, lowerRightCorner.lng),
+        LatLng(lowerRightCorner.lat, upperLeftCorner.lng)
+      ],
+    ));
+  }
 
-    int dim1 = grid.length;
-    int dim2 = grid[0].length;
-    Point upperLeftCorner = Point(
-        data["upperLeftCornerLatitude"], data["upperLeftCornerLongitude"]);
-    Point lowerRightCorner = Point(
-        data["lowerRightCornerLatitude"], data["lowerRightCornerLongitude"]);
-    double gridUnitSize = data["gridUnitSize"];
-
-    //debugPrint('dim1: $dim1');
-    //debugPrint('dim2: $dim2');
+  void drawGrid(grid) {
     String owner;
     String tailOwner;
 
-    if (!hasDrawnArena) {
-      _arenaPolygons.clear();
-      _arenaPolygons.add(Polygon(
-        color: Colors.transparent,
-        borderColor: const Color(0xFF004F71),
-        borderStrokeWidth: 2,
-        points: [
-          LatLng(upperLeftCorner.lat, upperLeftCorner.lng),
-          LatLng(upperLeftCorner.lat, lowerRightCorner.lng),
-          LatLng(lowerRightCorner.lat, lowerRightCorner.lng),
-          LatLng(lowerRightCorner.lat, upperLeftCorner.lng)
-        ],
-      ));
-      hasDrawnArena = true;
-    }
-    // updating grid
-    _polygons.clear();
-    for (int i = 0; i < dim1; i++) {
-      for (int j = 0; j < dim2; j++) {
+    for (int i = 0; i < gridSize.lat; i++) {
+      for (int j = 0; j < gridSize.lng; j++) {
+        changeFieldColor(i, j, Colors.transparent);
+        continue;
+        /*
         owner = grid[i][j]["owner"].toString();
         tailOwner = grid[i][j]["tailOwner"].toString();
 
-        if (owner == "none" && tailOwner == "none") continue;
+        if (owner == "none" && tailOwner == "none") {
+          continue;
+        }
 
         Color col;
-
-        debugPrint(owner);
 
         if (tailOwner != "none") {
           if (!_playerColors.containsKey(tailOwner)) {
@@ -222,22 +219,111 @@ class _MapWidgetState extends State<MapWidget> {
           col = PlayerColor.selectColor(
               _playerColors[owner], PlayerColor.ownedFieldAlpha);
         }
-        _polygons.add(Polygon(
-            points: makeField(i, j, upperLeftCorner, gridUnitSize),
-            color: col));
+        changeFieldColor(i, j, col);
+*/
       }
     }
+  }
 
-    // updating other player position
-    dynamic player;
-    double plat, plng;
-    for (String str in playerPositions) {
-      player = jsonDecode(str);
-      if (player["id"].toString() == ownId) continue;
-      debugPrint(player["latitude"].toString());
-      plat = player["latitude"];
-      plng = player["longitude"];
-      _polygons.add(drawPlayer(plat, plng));
+  void drawBeginning(data) {
+    if (!hasDrawnArena) {
+      dynamic grid = jsonDecode(data["arenaData"]);
+
+      debugPrint(grid.toString());
+
+      int dim1 = grid.length;
+      int dim2 = grid[0].length;
+      gridSize = Point(dim1.toDouble(), dim2.toDouble());
+      upperLeftCorner = Point(
+          data["upperLeftCornerLatitude"], data["upperLeftCornerLongitude"]);
+      lowerRightCorner = Point(
+          data["lowerRightCornerLatitude"], data["lowerRightCornerLongitude"]);
+      gridUnitSize = data["gridUnitSize"];
+
+      _polygons.clear();
+      for (int i = 0; i < dim1; i++) {
+        List<int> temp1 = List<int>();
+        List<int> temp2 = List<int>();
+        for (int j = 0; j < dim2; j++) {
+          temp1.add(-1);
+          temp2.add(-1);
+          _polygons
+              .add(new Polygon(points: makeField(i, j), color: Colors.black12));
+        }
+        tailer.add(temp1);
+        owner.add(temp2);
+      }
+
+      drawArenaBoundaries();
+      debugPrint(dim1.toString() + " " + dim2.toString());
+      drawGrid(grid);
+
+      hasDrawnArena = true;
+    }
+  }
+
+  void changeOwner(int a, int b, int c) {
+    if (c == -1) {
+      owner[a][b] = -1;
+      tailer[a][b] = -1;
+      changeFieldColor(a, b, Colors.transparent);
+      return;
+    }
+    if (!_playerColors.containsKey(c.toString())) {
+      _playerColors[c.toString()] = _playerColors.length + _gameRandSeed;
+    }
+    Color color = PlayerColor.selectColor(
+        _playerColors[c.toString()], PlayerColor.ownedFieldAlpha);
+    tailer[a][b] = -1;
+    owner[a][b] = c;
+    changeFieldColor(a, b, color);
+  }
+
+  void changeTailer(int a, int b, int c) {
+    if (c == -1) {
+      tailer[a][b] = -1;
+      if (owner[a][b] != -1) {
+        if (!_playerColors.containsKey(owner[a][b].toString())) {
+          _playerColors[owner[a][b].toString()] =
+              _playerColors.length + _gameRandSeed;
+        }
+        Color color = PlayerColor.selectColor(
+            _playerColors[owner[a][b].toString()], PlayerColor.ownedFieldAlpha);
+
+        changeFieldColor(a, b, color);
+      } else {
+        changeFieldColor(a, b, Colors.transparent);
+      }
+      return;
+    }
+
+    if (!_playerColors.containsKey(c.toString())) {
+      _playerColors[c.toString()] = _playerColors.length + _gameRandSeed;
+    }
+    Color color = PlayerColor.selectColor(
+        _playerColors[c.toString()], PlayerColor.tailFieldAlpha);
+
+    tailer[a][b] = c;
+    changeFieldColor(a, b, color);
+  }
+
+  void drawNewChanges(newChanges) {
+    int type, a, b, c;
+    for (var change in newChanges) {
+      type = change["type"];
+      a = change["a"];
+      b = change["b"];
+      c = change["c"];
+
+      switch (type) {
+        case 1:
+          changeOwner(a, b, c);
+          break;
+        case 2:
+          changeTailer(a, b, c);
+          break;
+        default:
+      }
     }
   }
 }
