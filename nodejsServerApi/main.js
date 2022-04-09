@@ -8,7 +8,7 @@ arena = new game_lib.Arena("Szigetszentmiklos1",
     new game_lib.MapPoint(47.372974, 18.996256),
     new game_lib.MapPoint(47.306302, 19.072626),
     100,
-)
+);
 /*
 arena2 = new game_lib.Arena("Kerekegyhaza",
     new game_lib.MapPoint(46.9492, 19.4562),
@@ -17,22 +17,29 @@ arena2 = new game_lib.Arena("Kerekegyhaza",
 )
 */
 
+arena4 = new game_lib.Arena("Szigetszentmiklos1",
+    new game_lib.MapPoint(47.34095, 19.03363),
+    new game_lib.MapPoint(47.33756, 19.03936),
+    50,
+);
+
 //AHAHAHAHAHAHAH
 
 arena3 = new game_lib.Arena("Prezi",
-    new game_lib.MapPoint(47.50615,19.05510),
-    new game_lib.MapPoint(47.50472,19.05705),
+    new game_lib.MapPoint(47.50615, 19.05510),
+    new game_lib.MapPoint(47.50472, 19.05705),
     100,
-)
+);
 
 
 console.log("V14");
 
-arena = arena3;
+arena = arena4;
 
 const wss = new WebSocketServer.Server({
     port: 8080
 });
+
 
 const con = mysql.createConnection({
     host: "localhost",
@@ -41,6 +48,17 @@ const con = mysql.createConnection({
     password: "",
     database: "mapconquest"
 });
+
+
+/*
+const con = mysql.createConnection({
+    host: "localhost",
+    port: 3308,
+    user: "root",
+    password: "",
+    database: "paperiogps"
+});
+*/
 
 const clients = new Map();
 var serverViewUser = undefined;
@@ -262,6 +280,9 @@ wss.on("connection", async function (ws) {
         else if (msg.type == "requestFieldUpdate") {
             console.log("requested FieldUpdate");
             arena.sendDataToPlayers();
+        }
+        else if (msg.type == "changeLastKnown") {
+            arena.changeLastKnown(msg.id, msg.lastKnown);
         }
     });
 
