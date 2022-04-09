@@ -36,9 +36,15 @@ arena5 = new game_lib.Arena("Szigetszentmiklos3",
     100,
 );
 
+arena6 = new game_lib.Arena("Szigetszentmiklos3",
+    new game_lib.MapPoint(47.34561, 19.02993),
+    new game_lib.MapPoint(47.34483, 19.03147),
+    20,
+);
+
 console.log("V14");
 
-arena = arena5;
+arena = arena6;
 
 const wss = new WebSocketServer.Server({
     port: 8080
